@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.png">
+    <title>Weather Lookup</title>
+    <link href="css/weather.css" rel="stylesheet">
+    <script src="js/weather.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Weather Lookup</h1>
+    </header>
+    <main>
+        <div id="searchBox">
+            <!--The zip code search goes here-->
+            <div class="centerInGridRow">
+                <input type="text" id="zip" placeholder="zip" required  size="5">
+            </div>
+            <div class="centerInGridRow">
+                <button id="getWeatherButton">Find Weather</button>
+            </div>
+            <!--Errors are printed here-->
+            <div id="errMsg" class="error noshow">
+            </div>
+        </div>
+        <div id="weatherBox">
+            <h3>City</h3>
+            <div id="weatherDetails">
+                <!--Weather report goes here-->
+            </div>
+        </div>
+    </main>
+    <footer>
+        <!--Put your name here-->
+        <h2>&copy;&nbsp;Copyright 2023 by S. Sigman</h2>
+    </footer>
+</body>
+</html>
