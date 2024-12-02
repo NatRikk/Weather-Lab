@@ -9,17 +9,18 @@
 <body>
   <div class="container">
     <h1>Sign-up</h1>
-    <form id="signupForm1">
+    <form id="passwordForm">
       <input type="email" placeholder="Email" required>
-      <input type="password" placeholder="Password" required>
-      <input type="password" placeholder="Confirm Password" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+      <span id="error-message" class="error"></span> <!-- Error appears here -->
       <br><br>
-
-        <span id="error-passwordconfirmation" class="error"></span>
-      <br>
-      <button type="button" onclick="navigateTo('signup2.html')">Next Page</button>
+      <button type="button" id="submitBtn">Next Page</button>
     </form>
   </div>
   <script src="../js/script.js"></script>
+  <script>
+    validatePasswordForm();
+  </script>
 </body>
 </html>
