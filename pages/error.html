@@ -71,7 +71,7 @@
     /* Footer (Copyright) styles */
     footer {
       position: absolute;
-      bottom: 60px;
+      bottom: 10px; /* Adjusted bottom value for more space */
       font-size: 0.8rem;
       color: white;
     }
@@ -107,18 +107,28 @@
     <div class="womp">Womp Womp</div>
 
     <!-- Rick Astley Image -->
-    <img class="rick-image" src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Rick_Astley_2015.jpg" alt="Rick Astley">
+    <img class="rick-image" src="../assets/rick.png" alt="Rick Astley">
 
-    <!-- Audio (repeating Rickroll) -->
-    <audio id="rickrollAudio" autoplay loop>
-      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    <!-- Audio (Never Gonna Give You Up) -->
+    <audio id="rickrollAudio" loop>
+      <source src="https://www.myinstants.com/media/sounds/never-gonna-give-you-up-rick-astley.mp3" type="audio/mpeg">
       Your browser does not support the audio element.
     </audio>
 
     <button onclick="navigateTo('login.html')">Back To Login Screen</button>
     <footer>© Max, Nastia, Austin 2024</footer>
   </div>
-  
+
   <script src="../js/script.js"></script>
+  <script>
+    // Ensure the audio starts when the page is loaded
+    window.onload = function() {
+      const audio = document.getElementById('rickrollAudio');
+      // Try playing the audio when the page loads
+      audio.play().catch((error) => {
+        console.log('Audio playback prevented:', error);
+      });
+    };
+  </script>
 </body>
 </html>

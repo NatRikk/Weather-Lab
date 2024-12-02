@@ -5,6 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
   <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Ensure the footer stays at the bottom of the page */
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 50vh; /* Make the body take up full viewport height */
+      margin: 0;
+    }
+
+    .container {
+      flex-grow: 1; /* Allows the container to grow and take available space */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      padding: 10px;
+      background-color: black;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -17,8 +44,33 @@
         <img id="weather-icon" src="" alt="Weather Icon" />
       </div>
     </div>
-    <p>© Max, Nastia, Austin 2024</p>
   </div>
+  <footer>© Max, Nastia, Austin 2024</footer>
+  
   <script src="../js/weather.js"></script>
+
+  <script>
+    // Konami Code Sequence (Arrow keys and 'b', 'a')
+    let sequence = [];
+    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    const reverseKonamiCode = ['ArrowDown', 'ArrowDown', 'ArrowUp', 'ArrowUp', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'b', 'a'];
+
+    window.addEventListener('keydown', (e) => {
+      sequence.push(e.key);
+      if (sequence.length > konamiCode.length) {
+        sequence.shift();
+      }
+
+      // Check for Konami code
+      if (JSON.stringify(sequence) === JSON.stringify(konamiCode)) {
+        window.location.href = 'flappy-bird.html'; // Redirect to the Flappy Bird page
+      }
+
+      // Check for reverse Konami code
+      if (JSON.stringify(sequence) === JSON.stringify(reverseKonamiCode)) {
+        window.location.href = 'dinosaur-game.html'; // Redirect to the Dinosaur game page
+      }
+    });
+  </script>
 </body>
 </html>
