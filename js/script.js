@@ -9,15 +9,40 @@ event.preventDefault();
 navigateTo('dashboard.html');
 }    
 
-document.getElementById('passwordForm').addEventListener('submit', function(event) {
-  const password = document.getElementById('password').value;
-  const confirmPassword = document.getElementById('confirmPassword').value;
+function validatePasswordForm() {
+  const form = document.getElementById('passwordForm');
+  const passwordInput = document.getElementById('password');
+  const confirmPasswordInput = document.getElementById('confirmPassword');
   const errorMessage = document.getElementById('error-message');
+  const submitButton = document.getElementById('submitBtn');
 
-  if (password !== confirmPassword) {
-      event.preventDefault(); // Prevent form submission
-      errorMessage.textContent = 'Passwords do not match!';
-  } else {
-      errorMessage.textContent = ''; // Clear error message
-  }
-});
+  // Event listener for the "Next Page" button
+  submitButton.addEventListener('click', function(event) {
+      const password = passwordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
+
+      // Validate passwords
+      if (password !== confirmPassword) {
+          errorMessage.textContent = 'Passwords do not match!'; // Display error message
+          confirmPasswordInput.style.borderColor = 'red'; // Highlight the confirm password field
+      } else {
+          errorMessage.textContent = ''; // Clear error message
+          confirmPasswordInput.style.borderColor = ''; // Reset border color
+          navigateTo('signup2.html')
+          // Add navigation logic if required, e.g., navigateTo('signup2.html');
+      }
+  });
+
+  // Event listener for changes in the "Confirm Password" field
+  confirmPasswordInput.addEventListener('input', function() {
+      const confirmPassword = confirmPasswordInput.value;
+      if (confirmPassword === '') {
+          errorMessage.textContent = ''; // Clear the error message when empty
+          confirmPasswordInput.style.borderColor = ''; // Reset border color
+      } else if (confirmPasswordInput.value === passwordInput.value) {
+          errorMessage.textContent = ''; // Clear error message if passwords match
+          confirmPasswordInput.style.borderColor = ''; // Reset border color
+      }
+  });
+}
+
