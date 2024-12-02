@@ -1,56 +1,50 @@
-// Map weather conditions to icon paths
-const weatherIconMap = {
-    clear: '../assets/sunny.png',  // sunny icon
-    clouds: '../assets/cloudy.png',  // cloudy icon
-    rain: '../assets/rainy.png',  // rainy icon
-    snow: '../assets/snowy.png',  // snowy icon
-    default: '../assets/default.png'  // fallback icon
-  };
-  
-  // Function to update the weather data on the page
-  function updateWeatherDisplay(weatherData) {
-    // Update city and temperature
-    document.getElementById('location').innerText = weatherData.city;
-    document.getElementById('temperature').innerText = `${weatherData.temperature}°`;
-  
-    // Get the appropriate weather icon
-    const iconPath = weatherIconMap[weatherData.condition] || weatherIconMap.default;
-    document.getElementById('weather-icon').src = iconPath;
-  }
-  
-  // Function to fetch weather data from the OpenWeatherMap API
-  async function fetchWeather(zipCode) {
-    const apiKey = '3d44767fee41af418e6d0d6ec40b7920'; // Replace with your OpenWeatherMap API key
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?zip=${zipCode},us&units=imperial&appid=${apiKey}`;
-  
-    try {
-      const response = await fetch(apiUrl);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch weather data: ${response.statusText}`);
+const apiKey = '3d44767fee41af418e6d0d6ec40b7920'; // Your OpenWeatherMap API key
+
+// Function to fetch weather data based on zip code
+async function fetchWeather(zipCode) {
+  const url = `https://api.openweathermap.org/data/2.5/weather?zip=${zipCode}&appid=${apiKey}&units=imperial`; // Units in Fahrenheit
+  try {
+    const response = await fetch(url);
+    if (response.ok) {
+      const data = await response.json();
+
+      // Log data for debugging
+      console.log("Weather Data:", data);
+
+      // Update the location (City name)
+      document.getElementById('location').textContent = data.name;
+
+      // Update the temperature (in °F)
+      document.getElementById('temperature').textContent = `${Math.round(data.main.temp)}°`;
+
+      // Map OpenWeatherMap icon codes to custom icons
+      const iconCode = data.weather[0].icon;  // Icon code like '01d', '02d', etc.
+      let iconPath = '';
+
+      // Map icon codes to your custom icons
+      if (iconCode === '01d' || iconCode === '01n') {
+        iconPath = '../assets/sunny.png';  // Clear sky
+      } else if (iconCode === '02d' || iconCode === '02n' || iconCode === '03d' || iconCode === '03n') {
+        iconPath = '../assets/cloudy.png';  // Cloudy
+      } else if (iconCode === '09d' || iconCode === '09n' || iconCode === '10d' || iconCode === '10n') {
+        iconPath = '../assets/rainy.png';  // Rain
+      } else if (iconCode === '13d' || iconCode === '13n') {
+        iconPath = '../assets/snowy.png';  // Snow
+      } else {
+        iconPath = '../assets/sunny.png';  // Default to sunny if no match
       }
-  
-      // Parse the JSON response
-      const weatherData = await response.json();
-      console.log('Weather Data:', weatherData); // Log the response for debugging
-  
-      // Format the data for display
-      const formattedData = {
-        city: weatherData.name,
-        temperature: Math.round(weatherData.main.temp), // Round the temperature to nearest integer
-        condition: weatherData.weather[0].main.toLowerCase() // Get weather condition (e.g., clear, clouds)
-      };
-  
-      // Update the display with the fetched weather data
-      updateWeatherDisplay(formattedData);
-    } catch (error) {
-      console.error('Error fetching weather data:', error);
-      // Display a fallback message and icon in case of an error
-      document.getElementById('location').innerText = 'Weather data unavailable';
-      document.getElementById('temperature').innerText = '--°';
-      document.getElementById('weather-icon').src = '../assets/default.png'; // Use a default icon
+
+      // Set the weather icon
+      document.getElementById('weather-icon').src = iconPath;
+
+    } else {
+      throw new Error('Error fetching weather data: ' + response.statusText);
     }
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+    document.getElementById('weather').innerHTML = '<p>Weather data unavailable</p>';
   }
-  
-  // Example: Call the fetchWeather function with a sample ZIP code (e.g., '10001' for New York, NY)
-  fetchWeather('65802'); // You can replace this with any ZIP code
-  
+}
+
+// Fetch weather for a given zip code (e.g., New York's ZIP code: 10001)
+fetchWeather('65802'); // Replace with any ZIP code you want to test
