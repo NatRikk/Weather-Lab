@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: black;
+    color: white;
+    text-align: center;
+  }
+  
+  .container {
+    padding: 20px;
+    max-width: 500px;
+    margin: auto;
+  }
+  
+  input, button {
+    display: block;
+    width: 80%;
+    margin: 10px auto;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  button {
+    background-color: grey;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  a {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  .error-page {
+    background-color: red;
+    color: white;
+  }
+  
