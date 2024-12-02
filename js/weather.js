@@ -52,5 +52,5 @@ const weatherIconMap = {
   }
   
   // Example: Call the fetchWeather function with a sample ZIP code (e.g., '10001' for New York, NY)
-  fetchWeather('10001'); // You can replace this with any ZIP code
+  fetchWeather('65802'); // You can replace this with any ZIP code
   
