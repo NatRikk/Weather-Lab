@@ -1,3 +1,4 @@
+// Map weather conditions to icons
 const weatherIconMap = {
     sunny: '../assets/sunny.png',
     cloudy: '../assets/cloudy.png',
@@ -5,6 +6,7 @@ const weatherIconMap = {
     snowy: '../assets/snowy.png'
   };
   
+  // Function to fetch weather data from the API
   async function fetchWeather(zipCode) {
     try {
       const response = await fetch(`/api/curweather?zip=${zipCode}`);
@@ -20,17 +22,19 @@ const weatherIconMap = {
     }
   }
   
+  // Function to update the weather display on the dashboard
   function updateWeatherDisplay(data) {
     const location = data.city || 'Unknown City';
-    const temperature = data.temperature || '00°';
+    const temperature = data.temperature || '00';
     const condition = data.condition.toLowerCase() || 'unknown';
   
+    // Update DOM elements
     document.getElementById('location').innerText = location;
     document.getElementById('temperature').innerText = `${temperature}°`;
-    document.getElementById('weather-icon').src = weatherIconMap[condition] || '';
-    document.getElementById('weather-icon').alt = condition;
+    const weatherIcon = document.getElementById('weather-icon');
+    weatherIcon.src = weatherIconMap[condition] || '';
+    weatherIcon.alt = condition;
   }
   
-  // Example: Fetch weather for a sample ZIP code
-  fetchWeather('10001'); // Replace with user's ZIP code input in the future
-  
+  // Example: Fetch weather for a specific ZIP code
+  fetchWeather('80005'); // Replace with dynamic ZIP code later  
