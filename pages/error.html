@@ -5,13 +5,120 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Error</title>
   <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Fullscreen red background */
+    body {
+      background-color: red;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .container {
+      text-align: center;
+      position: relative;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Make the 'Womp Womp' move from left to right */
+    .womp {
+      position: absolute;
+      font-size: 3rem;
+      font-weight: bold;
+      color: white;
+      animation: slide 10s infinite linear;
+      white-space: nowrap;
+      top: 20%;
+      left: -100%;
+    }
+
+    @keyframes slide {
+      0% {
+        left: -100%;
+      }
+      100% {
+        left: 100%;
+      }
+    }
+
+    /* Style for the button at the bottom */
+    button {
+      background-color: white;
+      color: red;
+      font-size: 1.2rem;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 5px;
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    button:hover {
+      background-color: #ddd;
+    }
+
+    /* Footer (Copyright) styles */
+    footer {
+      position: absolute;
+      bottom: 60px;
+      font-size: 0.8rem;
+      color: white;
+    }
+
+    /* Rick Astley Image Dancing */
+    .rick-image {
+      width: 250px;
+      max-width: 100%;
+      margin-top: 20px;
+      animation: dance 1s infinite alternate;
+    }
+
+    @keyframes dance {
+      0% {
+        transform: rotate(-5deg);
+      }
+      50% {
+        transform: rotate(5deg);
+      }
+      100% {
+        transform: rotate(-5deg);
+      }
+    }
+
+    /* Audio controls */
+    audio {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-  <div class="container error-page">
-    <h1>Womp Womp</h1>
+  <div class="container">
+    <div class="womp">Womp Womp</div>
+
+    <!-- Rick Astley Image -->
+    <img class="rick-image" src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Rick_Astley_2015.jpg" alt="Rick Astley">
+
+    <!-- Audio (repeating Rickroll) -->
+    <audio id="rickrollAudio" autoplay loop>
+      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+
     <button onclick="navigateTo('login.html')">Back To Login Screen</button>
     <footer>© Max, Nastia, Austin 2024</footer>
   </div>
+  
   <script src="../js/script.js"></script>
 </body>
 </html>
