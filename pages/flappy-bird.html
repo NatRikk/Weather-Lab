@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flappy Bird Game</title>
+  <style>
+    /* Fullscreen Flappy Bird Game Canvas */
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: lightblue;
+    }
+
+    canvas {
+      display: block;
+      background-color: lightblue;
+    }
+
+    /* Highscore and current score display */
+    #scoreDisplay {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 24px;
+      color: black;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas"></canvas>
+  <div id="scoreDisplay">
+    Score: 0 | Highscore: 0
+  </div>
+
+  <script>
+    // Game setup
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const bird = { 
+      x: 50, 
+      y: canvas.height / 2, 
+      width: 40, 
+      height: 40, 
+      gravity: 0.6, 
+      lift: -8, // Reduced jump height
+      velocity: 0 
+    };
+    let pipes = [];
+    let gameOver = false;
+    let score = 0;
+    let highscore = localStorage.getItem('highscore') ? parseInt(localStorage.getItem('highscore')) : 0;
+
+    // Update the score display
+    function updateScore() {
+      document.getElementById('scoreDisplay').textContent = `Score: ${score} | Highscore: ${highscore}`;
+    }
+
+    // Game Loop
+    function gameLoop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (gameOver) {
+        ctx.font = "30px Arial";
+        ctx.fillStyle = 'black';
+        ctx.fillText("Game Over!", canvas.width / 2 - 100, canvas.height / 2);
+
+        // Check if we need to update the highscore
+        if (score > highscore) {
+          highscore = score;
+          localStorage.setItem('highscore', highscore); // Save new highscore
+        }
+
+        // Redirect to weather page after 3 seconds
+        setTimeout(() => {
+          window.location.href = "dashboard.html"; // Adjust this URL to your weather page
+        }, 3000);
+
+        return;
+      }
+
+      bird.velocity += bird.gravity;
+      bird.y += bird.velocity;
+
+      // Prevent bird from falling off the screen
+      if (bird.y > canvas.height - bird.height) bird.y = canvas.height - bird.height;
+      if (bird.y < 0) bird.y = 0;
+
+      // Draw bird (white)
+      ctx.fillStyle = 'white';
+      ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
+
+      // Create and move pipes
+      if (pipes.length === 0 || pipes[pipes.length - 1].x < canvas.width - 200) {
+        pipes.push(createPipe());
+      }
+
+      pipes.forEach((pipe, index) => {
+        pipe.x -= 2;
+        ctx.fillStyle = 'white'; // White pipes
+        ctx.fillRect(pipe.x, 0, pipe.width, pipe.top);
+        ctx.fillRect(pipe.x, pipe.top + pipe.gap, pipe.width, canvas.height - pipe.top - pipe.gap);
+
+        // Remove off-screen pipes
+        if (pipe.x + pipe.width < 0) {
+          pipes.splice(index, 1);
+          score++; // Increment score when pipe passes
+        }
+
+        // Check for collision
+        if (bird.x + bird.width > pipe.x && bird.x < pipe.x + pipe.width &&
+            (bird.y < pipe.top || bird.y + bird.height > pipe.top + pipe.gap)) {
+          gameOver = true;
+        }
+      });
+
+      updateScore(); // Update the score display
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    // Create pipes
+    function createPipe() {
+      const gap = 200;
+      const top = Math.random() * (canvas.height - gap);
+      const width = 60;
+      return { x: canvas.width, top, gap, width };
+    }
+
+    // Handle bird jump (spacebar)
+    window.addEventListener('keydown', function(e) {
+      if (e.code === 'Space' && !gameOver) {
+        bird.velocity = bird.lift;
+      }
+    });
+
+    // Start the game loop
+    gameLoop();
+  </script>
+</body>
+</html>
