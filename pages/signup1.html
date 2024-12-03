@@ -5,22 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign-up</title>
   <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/script.js" defer></script>
 </head>
 <body>
   <div class="container">
     <h1>Sign-up</h1>
-    <form id="passwordForm">
+    <form id="passwordForm" > <!-- Added onsubmit="return false;" -->
+
       <input type="email" id="email" placeholder="Email" required>
       <input type="password" id="password" placeholder="Password" required>
       <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
       <span id="error-message" class="error"></span> <!-- Error appears here -->
       <br><br>
-      <button type="button" id="submitBtn">Next Page</button>
+      <button type="submit" id="submitBtn">Next Page</button>
+
     </form>
   </div>
-  <script src="../js/script.js"></script>
+ 
+  <script src="../js/signup1.js"></script>
   <script>
-    validatePasswordForm();
+       document.addEventListener('DOMContentLoaded', function() { validatePasswordForm(); // Call the function when the document is fully loaded 
+       });
   </script>
 </body>
 </html>

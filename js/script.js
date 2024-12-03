@@ -15,7 +15,7 @@ function navigateTo(page) {
     const passwordInput = document.getElementById('password');
     const confirmPasswordInput = document.getElementById('confirmPassword');
     const errorMessage = document.getElementById('error-message');
-    const submitButton = document.getElementById('submitBtn');
+    const submitButton = document.getElementById('');
   
     // Regular expression for password validation
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!$&#!%*?&])[A-Za-z\d!$&#!%*?&]{8,}$/;

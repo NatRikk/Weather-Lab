@@ -5,17 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign-up</title>
   <link rel="stylesheet" href="../css/style.css">
+
+  <script src="../js/script.js" defer></script>
+  <!-- Link specific script for feedback -->
+  <script src="../js/signup2.js" defer></script>
+
 </head>
 <body>
   <div class="container">
     <form id="signupForm2" onsubmit="submitSignup(event)">
-      <input type="text" placeholder="First Name" required>
-      <input type="text" placeholder="Last Name" required>
-      <input type="text" placeholder="Zip Code" required>
-      <input type="date" placeholder="Birthday" required>
-      <button type="submit">Sign-up</button>
+      <input type="text" id="First-Name" placeholder="First Name" required>
+      <input type="text" id="Last-Name" placeholder="Last Name" required>
+      <input type="text" id="Zip" placeholder="Zip Code" required>
+      <input type="date" id="Bday" placeholder="Birthday" required>
+      <button type="button"  onclick="submitStep2()">Sign-up</button>
     </form>
   </div>
-  <script src="../js/script.js"></script>
+ 
 </body>
 </html>
