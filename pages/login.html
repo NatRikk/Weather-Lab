@@ -16,14 +16,16 @@
       <button type="button" onclick="navigateTo('signup1.html')">Sign-up</button>
       <a href="error.html">Forgot Password</a>
     </form>
+    <div id="message"></div>
   </div>
   <script src="../js/script.js"></script>
-  <script >// Add an event listener to the login form submission
+  <script>
     document.getElementById('loginForm').addEventListener('submit', async function (event) {
       event.preventDefault(); // Prevent default form submission
     
       const email = event.target[0].value;  // The email field
       const password = event.target[1].value;  // The password field
+      const messageDiv = document.getElementById('message'); // The message element
     
       try {
         // Send login request to the server
@@ -42,13 +44,15 @@
           window.location.href = 'dashboard.html';
         } else {
           // If there is an error, show the message
-          alert(data.message);
+          messageDiv.textContent = data.message;
+          messageDiv.style.color = 'red'; // You can style the message as needed
         }
       } catch (error) {
         console.error('Error during login:', error);
-        alert('An error occurred during login.');
+        messageDiv.textContent = 'An error occurred during login.';
+        messageDiv.style.color = 'red'; // You can style the message as needed
       }
     });
-    </script>
+  </script>
 </body>
 </html>
