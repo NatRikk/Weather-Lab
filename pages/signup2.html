@@ -13,11 +13,18 @@
       <input type="text" id="lastName" name="lastName" placeholder="Last Name" required>
       <input type="text" id="zipcode" name="zipcode" placeholder="Zip Code" required>
       <input type="date" id="birthday" name="birthday" placeholder="Birthday" required>
+      <span id="error-message" class="error" style="color: red;"></span> <!-- Error message will appear here -->
       <button type="submit">Sign-up</button>
     </form>
   </div>
 
   <script>
+    function isValidZipCode(zipcode) {
+      // Regular expression to validate US ZIP codes (5 digits or 5+4 digits)
+      const zipCodePattern = /^[0-9]{5}(?:-[0-9]{4})?$/;
+      return zipCodePattern.test(zipcode);
+    }
+
     function submitSignup(event) {
       event.preventDefault();
 
@@ -26,6 +33,14 @@
       const lastName = document.getElementById('lastName').value;
       const zipcode = document.getElementById('zipcode').value;
       const birthday = document.getElementById('birthday').value;
+
+      const errorMessageElement = document.getElementById('error-message');
+      errorMessageElement.textContent = ''; // Clear any previous error message
+
+      if (!isValidZipCode(zipcode)) {
+        errorMessageElement.textContent = 'Invalid ZIP code.';
+        return;
+      }
 
       const data = { userId, firstName, lastName, zipcode, birthday };
 
@@ -37,18 +52,17 @@
       .then(response => response.json())
       .then(result => {
         if (result.message === "Step 2 complete!") {
-          alert('Signup complete!');
           // Save the zipcode to localStorage for use in the dashboard
           localStorage.setItem('zipcode', zipcode);
           // Redirect to the dashboard page
           window.location.href = 'dashboard.html';
         } else {
-          alert(result.message || 'Signup Step 2 failed.');
+          errorMessageElement.textContent = result.message || 'Signup Step 2 failed.';
         }
       })
       .catch(err => {
         console.error('Error:', err);
-        alert('An error occurred. Please try again.');
+        errorMessageElement.textContent = 'An error occurred. Please try again.';
       });
     }
 
