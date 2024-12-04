@@ -47,9 +47,70 @@
   </div>
   <footer>© Max, Nastia, Austin 2024</footer>
   
-  <script src="../js/weather.js"></script>
-
   <script>
+    // Function to fetch the weather data
+    async function fetchWeather(zipCode) {
+      const apiKey = '3d44767fee41af418e6d0d6ec40b7920'; // Replace with your OpenWeather API key
+      const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?zip=${zipCode}&appid=${apiKey}&units=imperial`;
+
+      try {
+        const response = await fetch(weatherUrl);
+        if (response.ok) {
+          const data = await response.json();
+          // Update weather information
+          document.getElementById('location').textContent = data.name || 'Unknown Location';
+          document.getElementById('temperature').textContent = `${Math.round(data.main.temp)}°`;
+          const weatherIcon = getWeatherIcon(data.weather[0].main.toLowerCase());
+          document.getElementById('weather-icon').src = `../assets/${weatherIcon}.png`;
+          document.getElementById('weather-icon').alt = data.weather[0].description;
+        } else {
+          throw new Error('Failed to fetch weather data');
+        }
+      } catch (error) {
+        console.error('Error fetching weather data:', error);
+        document.getElementById('location').textContent = 'Weather data unavailable';
+        document.getElementById('temperature').textContent = '--°';
+      }
+    }
+
+    // Helper function to map weather types to icon names
+    function getWeatherIcon(weatherMain) {
+      switch (weatherMain) {
+        case 'clear':
+          return 'sunny';
+        case 'clouds':
+          return 'cloudy';
+        case 'rain':
+          return 'rainy';
+        case 'snow':
+          return 'snowy';
+        default:
+          return 'default';
+      }
+    }
+
+    // Array of 366 Stoic quotes
+    const stoicQuotes = [
+      "Waste no more time arguing about what a good man should be. Be one. — Marcus Aurelius",
+      // more quotes...
+    ];
+
+    function displayQuote() {
+      const currentDate = new Date();
+      const dayOfYear = Math.floor(
+        (currentDate - new Date(currentDate.getFullYear(), 0, 0)) / 86400000
+      ); 
+      const quote = stoicQuotes[dayOfYear % stoicQuotes.length]; // Ensure it loops if fewer quotes exist
+      document.getElementById('quote').textContent = quote;
+    }
+
+    // Initial page load
+    document.addEventListener('DOMContentLoaded', () => {
+      const zipcode = localStorage.getItem('zipcode') || '65802'; // Default to '65802' if no ZIP code is found
+      fetchWeather(zipcode);
+      displayQuote();
+    });
+
     // Konami Code Sequence (Arrow keys and 'b', 'a')
     let sequence = [];
     const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];

@@ -38,6 +38,10 @@
       .then(result => {
         if (result.message === "Step 2 complete!") {
           alert('Signup complete!');
+          // Save the zipcode to localStorage for use in the dashboard
+          localStorage.setItem('zipcode', zipcode);
+          // Redirect to the dashboard page
+          window.location.href = 'dashboard.html';
         } else {
           alert(result.message || 'Signup Step 2 failed.');
         }
