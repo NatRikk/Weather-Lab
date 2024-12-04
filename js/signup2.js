@@ -1,5 +1,5 @@
 function submitStep2() {
-    const formData = new FormData(document.getElementById('step2Form'));
+    const formData = new FormData(document.getElementById('signupForm2'));
     const data = Object.fromEntries(formData);
     const userId = localStorage.getItem('userId'); // Retrieve userId from Step 1
   
@@ -10,7 +10,7 @@ function submitStep2() {
   
     data.userId = userId; // Include userId in the request
   
-    fetch('http://localhost:3000/signup/step2', {
+    fetch('http://localhost:3000/user-data', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),

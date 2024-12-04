@@ -54,7 +54,7 @@ app.post('/signup/step1', async (req, res) => {
 });
 
 // Step 2: Save additional details
-app.post('/signup/step2', async (req, res) => {
+app.post('/user-data', async (req, res) => {
   const { userId, firstName, lastName, zipcode, birthday } = req.body;
 
   if (!userId || !firstName || !lastName || !zipcode || !birthday) {
