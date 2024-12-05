@@ -6,16 +6,15 @@
   <title>Dashboard</title>
   <link rel="stylesheet" href="../css/style.css">
   <style>
-    /* Ensure the footer stays at the bottom of the page */
     body {
       display: flex;
       flex-direction: column;
-      height: 50vh; /* Make the body take up full viewport height */
+      min-height: 100vh;
       margin: 0;
     }
 
-    .container {
-      flex-grow: 1; /* Allows the container to grow and take available space */
+    .container1 {
+      flex-grow: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -23,18 +22,25 @@
       text-align: center;
     }
 
+    .container2 {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
     footer {
-      position: absolute;
-      bottom: 0;
       width: 100%;
       text-align: center;
       padding: 10px;
       background-color: black;
+      color: white;
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container1">
     <h1>Weather Dashboard</h1>
     <p id="quote">"Quote of the Day"</p>
     <div id="weather">
@@ -45,19 +51,39 @@
       </div>
     </div>
   </div>
-  <footer>© Max, Nastia, Austin 2024</footer>
-  
+
+  <div class="container2">
+    <form id="zip-selector" onsubmit="event.preventDefault(); fetchWeather();">
+      <input type="text" id="zipCode" name="zipCode" placeholder="Zip Code" required>
+      <button type="submit" id="submitBtn">Find Weather</button>
+    </form>
+  </div>
+
+  <footer>
+    © Max, Nastia, Austin 2024
+  </footer>
+
   <script>
-    // Function to fetch the weather data
-    async function fetchWeather(zipCode) {
-      const apiKey = '3d44767fee41af418e6d0d6ec40b7920'; // Replace with your OpenWeather API key
-      const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?zip=${zipCode}&appid=${apiKey}&units=imperial`;
+    function validateZipCode(zipCode) {
+      const zipCodePattern = /^[0-9]{5}$/;
+      return zipCodePattern.test(zipCode);
+    }
+
+    async function fetchWeather() {
+      const zipCode = document.getElementById('zipCode').value;
+
+      if (!validateZipCode(zipCode)) {
+        document.getElementById('location').textContent = 'Invalid ZIP code';
+        return;
+      }
+
+      const apiKey = '3d44767fee41af418e6d0d6ec40b7920';
+      const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?zip=${zipCode},us&appid=${apiKey}&units=imperial`;
 
       try {
         const response = await fetch(weatherUrl);
         if (response.ok) {
           const data = await response.json();
-          // Update weather information
           document.getElementById('location').textContent = data.name || 'Unknown Location';
           document.getElementById('temperature').textContent = `${Math.round(data.main.temp)}°`;
           const weatherIcon = getWeatherIcon(data.weather[0].main.toLowerCase());
@@ -73,7 +99,6 @@
       }
     }
 
-    // Helper function to map weather types to icon names
     function getWeatherIcon(weatherMain) {
       switch (weatherMain) {
         case 'clear':
@@ -89,29 +114,24 @@
       }
     }
 
-    // Array of 366 Stoic quotes
     const stoicQuotes = [
       "Waste no more time arguing about what a good man should be. Be one. — Marcus Aurelius",
-      // more quotes...
     ];
 
     function displayQuote() {
       const currentDate = new Date();
-      const dayOfYear = Math.floor(
-        (currentDate - new Date(currentDate.getFullYear(), 0, 0)) / 86400000
-      ); 
-      const quote = stoicQuotes[dayOfYear % stoicQuotes.length]; // Ensure it loops if fewer quotes exist
+      const dayOfYear = Math.floor((currentDate - new Date(currentDate.getFullYear(), 0, 0)) / 86400000);
+      const quote = stoicQuotes[dayOfYear % stoicQuotes.length];
       document.getElementById('quote').textContent = quote;
     }
 
-    // Initial page load
     document.addEventListener('DOMContentLoaded', () => {
-      const zipcode = localStorage.getItem('zipcode') || '65802'; // Default to '65802' if no ZIP code is found
-      fetchWeather(zipcode);
+      const zipcode = localStorage.getItem('zipcode') || '65802';
+      document.getElementById('zipCode').value = zipcode;
+      fetchWeather();
       displayQuote();
     });
 
-    // Konami Code Sequence (Arrow keys and 'b', 'a')
     let sequence = [];
     const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
     const reverseKonamiCode = ['ArrowDown', 'ArrowDown', 'ArrowUp', 'ArrowUp', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'b', 'a'];
@@ -122,14 +142,12 @@
         sequence.shift();
       }
 
-      // Check for Konami code
       if (JSON.stringify(sequence) === JSON.stringify(konamiCode)) {
-        window.location.href = 'flappy-bird.html'; // Redirect to the Flappy Bird page
+        window.location.href = 'flappy-bird.html';
       }
 
-      // Check for reverse Konami code
       if (JSON.stringify(sequence) === JSON.stringify(reverseKonamiCode)) {
-        window.location.href = 'dinosaur-game.html'; // Redirect to the Dinosaur game page
+        window.location.href = 'dinosaur-game.html';
       }
     });
   </script>

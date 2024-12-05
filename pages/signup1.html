@@ -31,17 +31,19 @@
 
       if (!passwordRegex.test(password)) {
         errorMessage.textContent = 'Password must be at least 8 characters long, include at least one uppercase letter, one digit, and one special character ($, &, !, #, ...).';
-        passwordInput.style.borderColor = 'red'; // Highlight the password field
-        return; // Stop further validation
+        document.getElementById('password').style.borderColor = 'red';
+        return;
       }
+
       if (password !== confirmPassword) {
-        document.getElementById('error-message').textContent = 'Passwords do not match.';
+        errorMessage.textContent = 'Passwords do not match.';
+        document.getElementById('confirmPassword').style.borderColor = 'red';
         return;
       }
 
       errorMessage.textContent = '';
-      passwordInput.style.borderColor = '';
-      confirmPasswordInput.style.borderColor = '';
+      document.getElementById('password').style.borderColor = '';
+      document.getElementById('confirmPassword').style.borderColor = '';
 
       const data = { email, password };
 
@@ -54,14 +56,14 @@
       .then(result => {
         if (result.userId) {
           localStorage.setItem('userId', result.userId);
-          window.location.href = 'signup2.html'; // Navigate to Step 2
+          window.location.href = 'signup2.html';
         } else {
-          document.getElementById('error-message').textContent = result.message || 'Signup Step 1 failed.';
+          errorMessage.textContent = result.message || 'Signup Step 1 failed.';
         }
       })
       .catch(err => {
         console.error('Error:', err);
-        document.getElementById('error-message').textContent = 'An error occurred. Please try again.';
+        errorMessage.textContent = 'An error occurred. Please try again.';
       });
     });
   </script>

@@ -48,6 +48,7 @@ app.post('/signup/step1', async (req, res) => {
       zipcode: null,
       birthday: null,
       accountCreated: new Date(),
+      lastloggedin: new Date(),
     };
 
     const result = await usersCollection.insertOne(newUser);
@@ -97,6 +98,43 @@ app.post('/user-data', async (req, res) => {
 });
 
 // Step 3: Login route (User login with password comparison)
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).send({ message: "Email and password are required!" });
+  }
+
+  try {
+    await client.connect();
+    const db = client.db(dbName);
+    const usersCollection = db.collection('users');
+
+    // Find the user by email
+    const user = await usersCollection.findOne({ email });
+    if (!user) {
+      return res.status(400).send({ message: "User not found!" });
+    }
+
+    // Compare the entered password with the stored hashed password
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) {
+      return res.status(400).send({ message: "Incorrect password!" });
+    }
+
+    // Update last logged in
+    await usersCollection.updateOne(
+      { _id: user._id },
+      { $set: { lastloggedin: new Date() } }
+    );
+
+    res.send({ message: "Login successful!", userId: user._id });
+  } catch (error) {
+    console.error("Error during login:", error);
+    res.status(500).send({ message: "Internal server error." });
+  } finally {
+    await client.close();
+  }
+});
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
